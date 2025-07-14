@@ -6,7 +6,6 @@ import com.land.management.repository.LandEntryRepository;
 import com.land.management.service.LandEntryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 
@@ -49,4 +48,15 @@ public ResponseEntity<byte[]> downloadPdf(@PathVariable Long id) {
         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + pdfName + "\"")
         .body(pdfBytes);
 }
+
+@PutMapping("/{id}")
+public ResponseEntity<LandEntry> updateEntry(@PathVariable Long id, @RequestBody LandEntry updatedEntry) {
+    try {
+        LandEntry savedEntry = landEntryService.updateEntry(id, updatedEntry);
+        return ResponseEntity.ok(savedEntry);
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+}
+
 }

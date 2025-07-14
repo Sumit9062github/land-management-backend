@@ -10,5 +10,6 @@ public interface LandEntryService {
     void deleteEntry(Long id);
     byte[] getPdfDataById(Long id);
     String getPdfNameById(Long id);
+    LandEntry updateEntry(Long id, LandEntry updatedEntry);
 
 }

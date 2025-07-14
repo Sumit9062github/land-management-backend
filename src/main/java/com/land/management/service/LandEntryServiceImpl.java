@@ -48,4 +48,30 @@ public String getPdfNameById(Long id) {
         .map(LandEntry::getPdfName)
         .orElse("document.pdf");
 }
+
+@Override
+public LandEntry updateEntry(Long id, LandEntry updatedEntry) {
+    LandEntry existing = landEntryRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Entry not found with ID: " + id));
+
+    // Update basic fields
+    existing.setPurpose(updatedEntry.getPurpose());
+    existing.setProposal(updatedEntry.getProposal());
+    existing.setArea(updatedEntry.getArea());
+    existing.setValuatedArea(updatedEntry.getValuatedArea());
+    existing.setPurchasedArea(updatedEntry.getPurchasedArea());
+    existing.setLocation(updatedEntry.getLocation());
+    existing.setRemarks(updatedEntry.getRemarks());
+    existing.setTabType(updatedEntry.getTabType());
+   // existing.set(updatedEntry.getTabType());
+
+    // Optional: Only update PDF if a new one is provided
+    if (updatedEntry.getPdfName() != null && updatedEntry.getPdfData() != null) {
+        existing.setPdfName(updatedEntry.getPdfName());
+        existing.setPdfData(updatedEntry.getPdfData());
+    }
+
+    return landEntryRepository.save(existing);
+}
+
 }
