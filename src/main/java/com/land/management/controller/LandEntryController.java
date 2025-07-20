@@ -27,10 +27,18 @@ private LandEntryService landEntryService;
         return repo.save(entry);
     }
 
-    @GetMapping
-    public List<LandEntry> getAllEntries() {
-        return repo.findAll();
+   @GetMapping
+public List<LandEntry> getAllEntries() {
+    List<LandEntry> entries = repo.findAll();
+    
+    // Remove large PDF data from each entry before sending to frontend
+    for (LandEntry entry : entries) {
+        entry.setPdfData(null); // or set to empty string if needed
     }
+
+    return entries;
+}
+
 
     @DeleteMapping("/{id}")
     public void deleteEntry(@PathVariable Long id) {
